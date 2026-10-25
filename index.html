@@ -13,177 +13,277 @@
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 html,body{margin:0;height:100%;overflow:hidden}
-:root{--txt:#f2f4ff;--dim:rgba(242,244,255,.55);--dim2:rgba(242,244,255,.35);
---accent:#6ea8ff;--danger:#ff3b30;--ok:#34d399;color-scheme:dark}
-html[data-theme="light"]{color-scheme:light;--txt:#0d1220;--dim:rgba(13,18,32,.6);--dim2:rgba(13,18,32,.4)}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;
+:root{--txt:#f2f4ff;--dim:rgba(242,244,255,.6);--dim2:rgba(242,244,255,.38);
+--accent:#6ea8ff;--danger:#ff3b30;--ok:#34d399;color-scheme:dark;
+--radius:22px;--radius-lg:28px;--blur:26px}
+html[data-theme="light"]{color-scheme:light;--txt:#0d1220;--dim:rgba(13,18,32,.65);--dim2:rgba(13,18,32,.4)}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,sans-serif;
 color:var(--txt);background:#05060f;display:flex;flex-direction:column;height:100dvh;
-user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased}
+user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased;
+letter-spacing:-.01em}
 #bg{position:fixed;inset:0;z-index:-3;background:radial-gradient(120% 80% at 50% 0%,#161d42 0%,#080a1a 45%,#03040a 100%)}
 html[data-theme="light"] #bg{background:radial-gradient(120% 80% at 50% 0%,#dfe7ff 0%,#eef2ff 45%,#f7f9ff 100%)}
-.blob{position:fixed;border-radius:50%;filter:blur(64px);opacity:.55;z-index:-2;animation:float 20s ease-in-out infinite;will-change:transform}
-.blob.b1{width:340px;height:340px;background:#4d6bff;top:-90px;left:-100px}
-.blob.b2{width:300px;height:300px;background:#b14dff;top:18%;right:-120px;animation-delay:-7s}
-.blob.b3{width:360px;height:360px;background:#00d4c8;bottom:-140px;left:-70px;animation-delay:-13s}
-.blob.b4{width:240px;height:240px;background:#ff4d94;bottom:20%;right:-90px;animation-delay:-4s;opacity:.35}
-@keyframes float{0%,100%{transform:translate3d(0,0,0) scale(1)}33%{transform:translate3d(34px,-42px,0) scale(1.14)}66%{transform:translate3d(-28px,26px,0) scale(.94)}}
-.glass{position:relative;background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.05));
--webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
-border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(255,255,255,.06);border-radius:22px}
-html[data-theme="light"] .glass{background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(255,255,255,.55));
-border-color:rgba(255,255,255,.9);box-shadow:0 8px 30px rgba(30,50,110,.16),inset 0 1px 0 #fff}
+.blob{position:fixed;border-radius:50%;filter:blur(72px);opacity:.55;z-index:-2;animation:float 22s ease-in-out infinite;will-change:transform}
+.blob.b1{width:380px;height:380px;background:#4d6bff;top:-110px;left:-120px}
+.blob.b2{width:340px;height:340px;background:#b14dff;top:16%;right:-140px;animation-delay:-7s}
+.blob.b3{width:400px;height:400px;background:#00d4c8;bottom:-160px;left:-90px;animation-delay:-13s}
+.blob.b4{width:260px;height:260px;background:#ff4d94;bottom:18%;right:-100px;animation-delay:-4s;opacity:.35}
+@keyframes float{0%,100%{transform:translate3d(0,0,0) scale(1)}33%{transform:translate3d(38px,-46px,0) scale(1.16)}66%{transform:translate3d(-30px,28px,0) scale(.92)}}
+
+.glass{
+  position:relative;
+  background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.045));
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(190%);
+  backdrop-filter:blur(var(--blur)) saturate(190%);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 10px 36px rgba(0,0,0,.5),
+    0 2px 8px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.32),
+    inset 0 -1px 0 rgba(255,255,255,.05);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+html[data-theme="light"] .glass{
+  background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(255,255,255,.55));
+  border-color:rgba(255,255,255,.95);
+  box-shadow:0 10px 34px rgba(30,50,110,.16),0 2px 8px rgba(30,50,110,.08),inset 0 1px 0 #fff;
+}
+/* двойной блик: сверху-слева и по диагонали */
+.glass::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,0) 42%);opacity:.55;mix-blend-mode:overlay}
 .glass::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-background:linear-gradient(120deg,rgba(255,255,255,.30) 0%,rgba(255,255,255,0) 42%);opacity:.5;mix-blend-mode:overlay}
-.tap{transition:transform .18s cubic-bezier(.32,1.5,.5,1),filter .2s}
-.tap:active{transform:scale(.955);filter:brightness(1.12)}
+  background:radial-gradient(120% 60% at 20% 0%,rgba(255,255,255,.22),transparent 55%);opacity:.4;mix-blend-mode:screen}
+
+.tap{transition:transform .2s cubic-bezier(.32,1.5,.5,1),filter .22s}
+.tap:active{transform:scale(.955);filter:brightness(1.14)}
+
+/* topbar */
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;
-padding:calc(10px + env(safe-area-inset-top)) 18px 10px;z-index:20}
+padding:calc(12px + env(safe-area-inset-top)) 18px 10px;z-index:20}
 .brand{display:flex;align-items:center;gap:12px;min-width:0}
-.logo{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;font-size:22px;animation:logoPulse 3s ease-in-out infinite}
-@keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-.h1{font-size:22px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
-.sub{font-size:12px;color:var(--dim);margin-top:2px}
-.iconbtn{width:44px;height:44px;border-radius:16px;border:0;display:grid;place-items:center;font-size:19px;
-color:var(--txt);cursor:pointer;flex:none}
-main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px 170px;position:relative;z-index:1;overscroll-behavior-y:contain}
-.view{animation:viewIn .45s cubic-bezier(.22,1.1,.36,1) both}
-@keyframes viewIn{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
-.hero{padding:20px;border-radius:26px;margin-bottom:12px;overflow:hidden}
-.hero .lbl{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--dim);font-weight:700}
-.hero .big{font-size:38px;font-weight:800;letter-spacing:-1.5px;margin:6px 0 2px;font-variant-numeric:tabular-nums;line-height:1.05}
+.logo{width:46px;height:46px;border-radius:17px;display:grid;place-items:center;font-size:23px;animation:logoPulse 3.4s ease-in-out infinite}
+@keyframes logoPulse{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.08) rotate(2deg)}}
+.h1{font-size:22px;font-weight:800;letter-spacing:-.5px;line-height:1.15}
+.sub{font-size:12px;color:var(--dim);margin-top:2px;font-weight:500}
+.iconbtn{width:46px;height:46px;border-radius:17px;border:0;display:grid;place-items:center;font-size:19px;
+color:var(--txt);cursor:pointer;flex:none;position:relative}
+.iconbtn.dot::after{content:'';position:absolute;top:9px;right:9px;width:9px;height:9px;border-radius:50%;
+background:#ff3b30;box-shadow:0 0 8px #ff3b30;animation:pulseDot 1.6s infinite}
+@keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.35);opacity:.75}}
+
+/* main */
+main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px 180px;position:relative;z-index:1;
+overscroll-behavior-y:contain;scrollbar-width:none}
+main::-webkit-scrollbar{display:none}
+.view{animation:viewIn .48s cubic-bezier(.22,1.1,.36,1) both}
+@keyframes viewIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+/* hero */
+.hero{padding:22px;border-radius:26px;margin-bottom:14px;position:relative;overflow:hidden}
+.hero .lbl{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--dim);font-weight:800}
+.hero .big{font-size:42px;font-weight:800;letter-spacing:-2px;margin:8px 0 2px;
+font-variant-numeric:tabular-nums;line-height:1;transition:transform .3s cubic-bezier(.32,1.5,.5,1)}
+.hero .big.tick{transform:scale(1.03)}
 .hero .big.neg{color:var(--danger)}
-.hero .ttl{font-size:16px;font-weight:600;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hero .meta{font-size:13px;color:var(--dim);margin-top:3px}
+.hero .ttl{font-size:16px;font-weight:700;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
+.hero .meta{font-size:13px;color:var(--dim);margin-top:4px;font-weight:500}
+.hero::before{content:'';position:absolute;top:-50%;right:-30%;width:70%;height:200%;
+background:radial-gradient(closest-side,rgba(110,168,255,.28),transparent);pointer-events:none;filter:blur(20px)}
 .pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:7px;
-box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:pulseRing 2s infinite}
+box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:pulseRing 2s infinite;vertical-align:middle}
 @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(52,211,153,.6)}70%{box-shadow:0 0 0 12px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
-.sect{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim2);font-weight:800;margin:20px 4px 10px}
-.card{padding:14px;border-radius:20px;display:flex;gap:12px;align-items:center;margin-bottom:10px;
-animation:cardIn .5s cubic-bezier(.22,1.2,.4,1) both;cursor:pointer;position:relative;overflow:hidden}
-@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
-.card.done{opacity:.45}
-.card.done .ctitle{text-decoration:line-through}
-.card.critical{border-color:rgba(255,77,106,.7);box-shadow:0 0 0 1px rgba(255,77,106,.5),0 8px 28px rgba(255,60,90,.25)}
-html[data-theme="light"] .card.critical{border-color:rgba(255,77,106,.9)}
-.dot{width:10px;height:10px;border-radius:50%;flex:none}
-.grow{flex:1;min-width:0}
-.ctitle{font-size:15.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.csub{font-size:12.5px;color:var(--dim);margin-top:3px;display:flex;gap:6px;align-items:center;flex-wrap:nowrap;overflow:hidden}
-.cat-pill{font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;letter-spacing:.3px;flex:none}
-.cd{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;flex:none;text-align:right}
+
+/* section */
+.sect{font-size:12px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dim2);font-weight:800;margin:22px 4px 11px}
+
+/* card */
+.card{padding:15px;border-radius:20px;display:flex;gap:12px;align-items:center;margin-bottom:11px;
+animation:cardIn .55s cubic-bezier(.22,1.2,.4,1) both;cursor:pointer;position:relative;overflow:hidden;
+transition:transform .2s,box-shadow .3s}
+.card:active{transform:scale(.985)}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+.card.done{opacity:.42}
+.card.done .ctitle{text-decoration:line-through;color:var(--dim)}
+.card.critical{border-color:rgba(255,77,106,.7);
+box-shadow:0 0 0 1px rgba(255,77,106,.5),0 10px 32px rgba(255,60,90,.28),inset 0 1px 0 rgba(255,200,210,.3);
+animation:critGlow 2s ease-in-out infinite,cardIn .55s cubic-bezier(.22,1.2,.4,1) both}
+@keyframes critGlow{0%,100%{box-shadow:0 0 0 1px rgba(255,77,106,.5),0 10px 32px rgba(255,60,90,.28)}50%{box-shadow:0 0 0 1px rgba(255,77,106,.85),0 10px 42px rgba(255,60,90,.55)}}
+.card .glow{position:absolute;top:-30%;left:-20%;width:60%;height:160%;
+background:radial-gradient(closest-side,rgba(110,168,255,.25),transparent);pointer-events:none;filter:blur(20px);opacity:.6}
+.card.critical .glow{background:radial-gradient(closest-side,rgba(255,77,106,.4),transparent)}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;position:relative;z-index:1}
+.grow{flex:1;min-width:0;position:relative;z-index:1}
+.ctitle{font-size:15.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
+.csub{font-size:12.5px;color:var(--dim);margin-top:4px;display:flex;gap:6px;align-items:center;flex-wrap:nowrap;overflow:hidden;font-weight:500}
+.cat-pill{font-size:10px;padding:2px 7px;border-radius:8px;font-weight:800;letter-spacing:.3px;flex:none}
+.cd{font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;flex:none;text-align:right;
+transition:transform .25s cubic-bezier(.32,1.5,.5,1);position:relative;z-index:1}
+.cd.tick{transform:scale(1.06)}
 .cd.neg{color:var(--danger)}
-.chk{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.3);flex:none;
-display:grid;place-items:center;font-size:13px;color:transparent;transition:.2s;background:rgba(255,255,255,.05);cursor:pointer}
+.chk{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.32);flex:none;
+display:grid;place-items:center;font-size:14px;color:transparent;transition:.25s cubic-bezier(.32,1.5,.5,1);
+background:rgba(255,255,255,.06);cursor:pointer;position:relative;z-index:1}
 .chk:active{transform:scale(.85)}
-.chk.on{background:var(--ok);border-color:var(--ok);color:#04231a;box-shadow:0 0 12px rgba(52,211,153,.6)}
-.empty{padding:40px 16px;text-align:center;color:var(--dim2);font-size:14px}
+.chk.on{background:linear-gradient(145deg,#34d399,#0fa87a);border-color:transparent;color:#04231a;
+box-shadow:0 0 16px rgba(52,211,153,.7),inset 0 1px 0 rgba(255,255,255,.5)}
+.empty{padding:44px 16px;text-align:center;color:var(--dim2);font-size:14px;font-weight:500}
+
+/* form */
 input,select,textarea,button{font-family:inherit;font-size:16px}
-.field{width:100%;padding:13px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.14);
-background:rgba(255,255,255,.07);color:var(--txt);outline:none;transition:.2s;-webkit-appearance:none;appearance:none}
-html[data-theme="light"] .field{background:rgba(255,255,255,.7);border-color:rgba(20,40,90,.12);color:#0d1220}
-.field:focus{border-color:rgba(120,170,255,.75);box-shadow:0 0 0 4px rgba(90,140,255,.18)}
+.field{width:100%;padding:14px 15px;border-radius:16px;border:1px solid rgba(255,255,255,.14);
+background:rgba(255,255,255,.07);color:var(--txt);outline:none;transition:.22s;-webkit-appearance:none;appearance:none;
+-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:500}
+html[data-theme="light"] .field{background:rgba(255,255,255,.72);border-color:rgba(20,40,90,.14);color:#0d1220}
+.field:focus{border-color:rgba(120,170,255,.8);box-shadow:0 0 0 4px rgba(90,140,255,.2);background:rgba(255,255,255,.1)}
 .field::placeholder{color:var(--dim2)}
 .row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.chip{padding:8px 12px;border-radius:14px;font-size:13px;border:1px solid rgba(255,255,255,.15);
-background:rgba(255,255,255,.06);color:var(--dim);transition:.2s;cursor:pointer}
-html[data-theme="light"] .chip{background:rgba(255,255,255,.6);border-color:rgba(20,40,90,.1);color:#3b4664}
-.chip.on{background:linear-gradient(145deg,rgba(110,170,255,.5),rgba(110,170,255,.2));color:#fff;
-border-color:rgba(150,200,255,.7);box-shadow:0 0 18px rgba(90,150,255,.4);transform:scale(1.04)}
-.btn{padding:13px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.16);cursor:pointer;
-background:rgba(255,255,255,.08);color:var(--txt);font-weight:650;transition:.18s;
-display:flex;align-items:center;justify-content:center;gap:6px}
-.btn:active{transform:scale(.96);filter:brightness(1.15)}
-.btn.primary{background:linear-gradient(145deg,#5b8dff,#3f6bff);border-color:rgba(150,190,255,.5);
-box-shadow:0 8px 24px rgba(70,110,255,.45),inset 0 1px 0 rgba(255,255,255,.4);color:#fff}
-.btn.danger{background:linear-gradient(145deg,rgba(255,70,60,.9),rgba(200,30,25,.9));
+.chip{padding:9px 13px;border-radius:14px;font-size:13px;border:1px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.06);color:var(--dim);transition:.22s;cursor:pointer;font-weight:600;
+-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+html[data-theme="light"] .chip{background:rgba(255,255,255,.65);border-color:rgba(20,40,90,.1);color:#3b4664}
+.chip.on{background:linear-gradient(145deg,rgba(110,170,255,.55),rgba(110,170,255,.2));color:#fff;
+border-color:rgba(150,200,255,.75);box-shadow:0 0 20px rgba(90,150,255,.45),inset 0 1px 0 rgba(255,255,255,.4);transform:scale(1.04)}
+.btn{padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.16);cursor:pointer;
+background:rgba(255,255,255,.08);color:var(--txt);font-weight:700;transition:.18s;
+display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:-.1px;
+-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn:active{transform:scale(.96);filter:brightness(1.16)}
+.btn.primary{background:linear-gradient(145deg,#5b8dff,#3f6bff);border-color:rgba(150,190,255,.55);
+box-shadow:0 10px 26px rgba(70,110,255,.5),inset 0 1px 0 rgba(255,255,255,.45);color:#fff}
+.btn.danger{background:linear-gradient(145deg,rgba(255,70,60,.92),rgba(200,30,25,.92));
 border-color:rgba(255,150,140,.5);color:#fff}
-.btn.small{padding:9px 12px;font-size:13px;border-radius:12px}
-.label{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim2);font-weight:800;margin:14px 2px 8px}
-.hint{font-size:12.5px;color:var(--dim);line-height:1.5}
-.mini{width:30px;height:30px;border-radius:11px;border:1px solid rgba(255,255,255,.15);
-background:rgba(255,255,255,.08);color:var(--txt);display:grid;place-items:center;font-size:14px;cursor:pointer}
-.remrow{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;
-border-radius:14px;margin-bottom:6px;font-size:13.5px}
+.btn.small{padding:9px 13px;font-size:13px;border-radius:12px}
+.label{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim2);font-weight:800;margin:15px 2px 9px}
+.hint{font-size:12.5px;color:var(--dim);line-height:1.55;font-weight:500}
+.mini{width:32px;height:32px;border-radius:12px;border:1px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.08);color:var(--txt);display:grid;place-items:center;font-size:15px;cursor:pointer}
+.remrow{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;
+border-radius:14px;margin-bottom:7px;font-size:13.5px;font-weight:600}
+
+/* tabbar */
 .tabbar{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));
 display:flex;gap:3px;padding:6px;border-radius:26px;z-index:60}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0;border-radius:20px;
-font-size:10px;font-weight:700;color:var(--dim);background:transparent;border:0;transition:.25s;cursor:pointer}
-.tab .ic{font-size:19px;line-height:1;transition:transform .3s cubic-bezier(.32,1.6,.5,1)}
-.tab.active{color:var(--txt);background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.08));
-box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 4px 16px rgba(0,0,0,.3)}
-.tab.active .ic{transform:translateY(-2px) scale(1.15)}
-.fab{position:fixed;right:18px;bottom:calc(96px + env(safe-area-inset-bottom));width:62px;height:62px;
-border-radius:22px;border:1px solid rgba(180,210,255,.5);font-size:30px;font-weight:300;color:#fff;
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;border-radius:20px;
+font-size:10px;font-weight:700;color:var(--dim);background:transparent;border:0;transition:.28s;cursor:pointer;letter-spacing:.2px}
+.tab .ic{font-size:19px;line-height:1;transition:transform .35s cubic-bezier(.32,1.6,.5,1)}
+.tab.active{color:var(--txt);background:linear-gradient(145deg,rgba(255,255,255,.26),rgba(255,255,255,.1));
+box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 4px 18px rgba(0,0,0,.35)}
+.tab.active .ic{transform:translateY(-2px) scale(1.18)}
+
+/* FAB */
+.fab{position:fixed;right:18px;bottom:calc(96px + env(safe-area-inset-bottom));width:64px;height:64px;
+border-radius:22px;border:1px solid rgba(180,210,255,.55);font-size:32px;font-weight:300;color:#fff;
 background:linear-gradient(145deg,#6e9dff,#3c62ff);z-index:61;cursor:pointer;
-box-shadow:0 12px 32px rgba(60,100,255,.55),inset 0 1px 0 rgba(255,255,255,.5);
-display:grid;place-items:center;transition:transform .2s cubic-bezier(.32,1.6,.5,1)}
+box-shadow:0 14px 36px rgba(60,100,255,.6),inset 0 1px 0 rgba(255,255,255,.55);
+display:grid;place-items:center;transition:transform .25s cubic-bezier(.32,1.6,.5,1)}
 .fab:active{transform:scale(.9) rotate(90deg)}
+
+/* sheet */
 .sheetwrap{position:fixed;inset:0;z-index:90;display:flex;align-items:flex-end;
-background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+background:rgba(0,0,0,.58);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
 opacity:0;pointer-events:none;transition:opacity .3s}
 .sheetwrap.open{opacity:1;pointer-events:auto}
-.sheet{width:100%;max-height:92dvh;overflow-y:auto;border-radius:30px 30px 0 0;
+.sheet{width:100%;max-height:92dvh;overflow-y:auto;border-radius:32px 32px 0 0;
 padding:16px 18px calc(28px + env(safe-area-inset-bottom));
-transform:translateY(100%);transition:transform .48s cubic-bezier(.32,1.14,.4,1);
-background:linear-gradient(160deg,rgba(28,34,64,.96),rgba(14,18,36,.98));
--webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);
-border-top:1px solid rgba(255,255,255,.2);box-shadow:0 -20px 60px rgba(0,0,0,.7)}
-html[data-theme="light"] .sheet{background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(238,242,255,.98))}
+transform:translateY(100%);transition:transform .5s cubic-bezier(.32,1.14,.4,1);
+background:linear-gradient(165deg,rgba(30,36,68,.97),rgba(14,18,36,.99));
+-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);
+border-top:1px solid rgba(255,255,255,.22);box-shadow:0 -24px 68px rgba(0,0,0,.75);scrollbar-width:none}
+.sheet::-webkit-scrollbar{display:none}
+html[data-theme="light"] .sheet{background:linear-gradient(165deg,rgba(255,255,255,.99),rgba(238,242,255,.99))}
 .sheetwrap.open .sheet{transform:translateY(0)}
-.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.sheettitle{font-size:20px;font-weight:800;letter-spacing:-.3px}
-.grab{width:38px;height:5px;border-radius:3px;background:rgba(255,255,255,.25);margin:0 auto 12px}
+.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.sheettitle{font-size:20px;font-weight:800;letter-spacing:-.4px}
+.grab{width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.28);margin:0 auto 13px}
+
+/* alarm */
 #alarm{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;align-items:center;
 justify-content:center;gap:16px;padding:28px;text-align:center;
-background:radial-gradient(circle at 50% 40%,rgba(255,59,48,.62),rgba(110,0,0,.95));
--webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+background:radial-gradient(circle at 50% 40%,rgba(255,59,48,.65),rgba(110,0,0,.96));
+-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 #alarm.on{display:flex;animation:alarmPulse 1.05s infinite}
 @keyframes alarmPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.55)}}
-#alarm .warn{font-size:88px;line-height:1;animation:warnBounce .7s infinite alternate cubic-bezier(.32,1.6,.5,1);
-filter:drop-shadow(0 0 30px rgba(255,220,120,.9))}
-@keyframes warnBounce{from{transform:scale(1) rotate(-7deg)}to{transform:scale(1.22) rotate(7deg)}}
-#alarm .atitle{font-size:26px;font-weight:900;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.6);max-width:100%}
-#alarm .awhen{font-size:15px;color:rgba(255,255,255,.9);font-weight:600}
+#alarm .warn{font-size:92px;line-height:1;animation:warnBounce .7s infinite alternate cubic-bezier(.32,1.6,.5,1);
+filter:drop-shadow(0 0 34px rgba(255,220,120,.95))}
+@keyframes warnBounce{from{transform:scale(1) rotate(-7deg)}to{transform:scale(1.25) rotate(7deg)}}
+#alarm .atitle{font-size:26px;font-weight:900;color:#fff;text-shadow:0 4px 22px rgba(0,0,0,.65);max-width:100%}
+#alarm .awhen{font-size:15px;color:rgba(255,255,255,.92);font-weight:600}
 #alarm .abtns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin-top:14px}
-#alarm .abtn{padding:17px;border-radius:20px;border:1px solid rgba(255,255,255,.4);font-size:17px;
-font-weight:800;background:rgba(255,255,255,.16);color:#fff;-webkit-backdrop-filter:blur(20px);
-backdrop-filter:blur(20px);cursor:pointer;transition:.18s}
-#alarm .abtn:active{transform:scale(.96);background:rgba(255,255,255,.3)}
-#alarm .abtn.main{background:#fff;color:#c1121f;border-color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.4)}
-#toast{position:fixed;left:50%;bottom:calc(180px + env(safe-area-inset-bottom));transform:translate(-50%,20px);
-padding:12px 20px;border-radius:18px;font-size:14px;font-weight:650;z-index:400;opacity:0;
-pointer-events:none;transition:.35s cubic-bezier(.32,1.4,.4,1);max-width:90vw;text-align:center;
-background:rgba(20,26,50,.94);border:1px solid rgba(255,255,255,.2);color:#fff;
--webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#alarm .abtn{padding:17px;border-radius:20px;border:1px solid rgba(255,255,255,.42);font-size:17px;
+font-weight:800;background:rgba(255,255,255,.16);color:#fff;-webkit-backdrop-filter:blur(22px);
+backdrop-filter:blur(22px);cursor:pointer;transition:.18s}
+#alarm .abtn:active{transform:scale(.96);background:rgba(255,255,255,.32)}
+#alarm .abtn.main{background:#fff;color:#c1121f;border-color:#fff;box-shadow:0 12px 34px rgba(0,0,0,.45)}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:calc(184px + env(safe-area-inset-bottom));transform:translate(-50%,20px);
+padding:13px 21px;border-radius:18px;font-size:14px;font-weight:700;z-index:400;opacity:0;
+pointer-events:none;transition:.38s cubic-bezier(.32,1.4,.4,1);max-width:90vw;text-align:center;
+background:rgba(20,26,50,.95);border:1px solid rgba(255,255,255,.22);color:#fff;
+-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);box-shadow:0 12px 34px rgba(0,0,0,.55)}
 #toast.on{opacity:1;transform:translate(-50%,0)}
-.calhead{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:20px;margin-bottom:12px}
-.calhead .m{font-size:17px;font-weight:800;text-transform:capitalize}
+
+/* calendar */
+.calhead{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-radius:20px;margin-bottom:12px}
+.calhead .m{font-size:17px;font-weight:800;text-transform:capitalize;letter-spacing:-.2px}
 .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.wd{text-align:center;font-size:11px;font-weight:800;color:var(--dim2);padding:4px 0}
+.wd{text-align:center;font-size:11px;font-weight:800;color:var(--dim2);padding:5px 0;letter-spacing:.5px}
 .day{aspect-ratio:1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-gap:3px;font-size:14px;font-weight:650;color:var(--txt);background:rgba(255,255,255,.045);
-border:1px solid transparent;transition:.2s;cursor:pointer;position:relative}
-html[data-theme="light"] .day{background:rgba(255,255,255,.55)}
-.day.today{border-color:rgba(110,168,255,.9);box-shadow:0 0 14px rgba(110,168,255,.4)}
-.day.sel{background:linear-gradient(145deg,#6e9dff,#3c62ff);color:#fff;box-shadow:0 6px 20px rgba(60,100,255,.5)}
+gap:3px;font-size:14px;font-weight:700;color:var(--txt);background:rgba(255,255,255,.05);
+border:1px solid transparent;transition:.22s;cursor:pointer;position:relative}
+html[data-theme="light"] .day{background:rgba(255,255,255,.6)}
+.day.today{border-color:rgba(110,168,255,.9);box-shadow:0 0 16px rgba(110,168,255,.45)}
+.day.sel{background:linear-gradient(145deg,#6e9dff,#3c62ff);color:#fff;box-shadow:0 8px 24px rgba(60,100,255,.55)}
 .dots{display:flex;gap:2px;height:5px}
 .dots i{width:4px;height:4px;border-radius:50%;display:block}
-.settingscard{padding:16px;border-radius:22px;margin-bottom:12px}
-.banner{padding:14px 16px;border-radius:20px;margin-bottom:12px;display:flex;gap:12px;align-items:center;animation:cardIn .5s both}
-.banner.warn{border-color:rgba(255,120,90,.6);background:linear-gradient(145deg,rgba(255,90,70,.25),rgba(255,90,70,.1))}
-.banner.info{border-color:rgba(110,168,255,.5);background:linear-gradient(145deg,rgba(110,168,255,.2),rgba(110,168,255,.08))}
-.banner .em{font-size:28px;flex:none}
+
+/* settings cards */
+.settingscard{padding:17px;border-radius:22px;margin-bottom:12px}
+
+/* banners */
+.banner{padding:15px 17px;border-radius:20px;margin-bottom:12px;display:flex;gap:13px;align-items:center;
+animation:cardIn .55s both;position:relative;overflow:hidden}
+.banner.warn{border-color:rgba(255,120,90,.65);background:linear-gradient(145deg,rgba(255,90,70,.28),rgba(255,90,70,.1))}
+.banner.info{border-color:rgba(110,168,255,.55);background:linear-gradient(145deg,rgba(110,168,255,.22),rgba(110,168,255,.08))}
+.banner.ok{border-color:rgba(52,211,153,.55);background:linear-gradient(145deg,rgba(52,211,153,.22),rgba(52,211,153,.08))}
+.banner .em{font-size:29px;flex:none}
 .banner .bt{flex:1;min-width:0}
-.banner .bt b{display:block;font-size:14px;margin-bottom:2px}
-.banner .bt small{font-size:12px;color:var(--dim)}
+.banner .bt b{display:block;font-size:14px;margin-bottom:3px;font-weight:800}
+.banner .bt small{font-size:12px;color:var(--dim);font-weight:500;line-height:1.4;display:block}
+
+/* onboard checklist */
+.onboard{padding:16px;border-radius:22px;margin-bottom:12px}
+.onboard .obtitle{font-size:15px;font-weight:800;margin-bottom:10px;letter-spacing:-.2px}
+.obitem{display:flex;gap:11px;align-items:flex-start;padding:11px 12px;border-radius:14px;
+background:rgba(255,255,255,.045);margin-bottom:8px;transition:.2s;cursor:pointer}
+.obitem:active{transform:scale(.98);background:rgba(255,255,255,.09)}
+.obitem.done{opacity:.55}
+.obitem .obchk{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.32);
+flex:none;display:grid;place-items:center;font-size:12px;color:transparent;transition:.25s}
+.obitem.done .obchk{background:linear-gradient(145deg,#34d399,#0fa87a);border-color:transparent;color:#04231a}
+.obitem .obtxt{flex:1;min-width:0}
+.obitem .obtxt b{display:block;font-size:13.5px;margin-bottom:2px;font-weight:700}
+.obitem .obtxt small{font-size:11.5px;color:var(--dim);display:block;line-height:1.4}
+
+/* quick row */
 .quickrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+
+/* filter chips */
 .filterbar{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 12px;margin:0 -4px;scrollbar-width:none}
 .filterbar::-webkit-scrollbar{display:none}
-.fchip{padding:7px 12px;border-radius:12px;font-size:12px;font-weight:650;white-space:nowrap;
+.fchip{padding:8px 13px;border-radius:12px;font-size:12px;font-weight:700;white-space:nowrap;
 border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:var(--dim);cursor:pointer;transition:.2s}
-.fchip.on{background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.12));color:var(--txt);
+.fchip.on{background:linear-gradient(145deg,rgba(255,255,255,.3),rgba(255,255,255,.13));color:var(--txt);
 border-color:rgba(255,255,255,.5)}
+
+/* status pill */
+.status{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:10px;
+font-size:11px;font-weight:800;letter-spacing:.3px}
+.status.ok{background:rgba(52,211,153,.22);color:#34d399}
+.status.bad{background:rgba(255,90,70,.22);color:#ff8a70}
+.status.warn{background:rgba(255,178,110,.22);color:#ffb26e}
 </style>
 </head>
 <body>
@@ -231,7 +331,7 @@ border-color:rgba(255,255,255,.5)}
 
 <script>
 /* ============ КОНСТАНТЫ ============ */
-const KEY='glass_diary_v3';
+const KEY='glass_diary_v4';
 const PRESETS=[
   {l:'5 мин',s:300},{l:'15 мин',s:900},{l:'30 мин',s:1800},
   {l:'1 ч',s:3600},{l:'2 ч',s:7200},{l:'6 ч',s:21600},{l:'12 ч',s:43200},
@@ -247,23 +347,23 @@ const CATS={
   urgent:{label:'Важное',color:'#ff4d6a',icon:'🔥'}
 };
 const COLORS=['#6ea8ff','#b18cff','#ff6ea8','#ffb26e','#6ee7c8','#8cff7a','#ff6e6e','#5ee0ff'];
-const DEF={ntfy:'',sound:true,theme:'auto'};
+const DEF={ntfy:'',sound:true,theme:'auto',ntfyConfirmed:false};
 const FIRE_WINDOW=30*60*1000;
 const MISSED_WINDOW=7*24*3600*1000;
+const NTFY_HORIZON=14*24*3600*1000;
 
 /* ============ СОСТОЯНИЕ ============ */
 let state=loadState(),tab='today',editing=null,
     calMonth=(()=>{const d=new Date();return new Date(d.getFullYear(),d.getMonth(),1).getTime()})(),
     selDay=null,search='',filterCat='all',alarmQueue=[],currentAlarm=null,
-    lastDayKey=new Date().toDateString(),missedCache=[];
+    lastDayKey=new Date().toDateString(),missedCache=[],lastTickVal={};
 
 function loadState(){
   try{
     const raw=JSON.parse(localStorage.getItem(KEY));
     if(raw&&Array.isArray(raw.events)){
       raw.events.forEach(ev=>{
-        ev.fired=ev.fired||[];
-        ev._scheduled=ev._scheduled||{};
+        ev.fired=ev.fired||[];ev._scheduled=ev._scheduled||{};
         ev.reminders=(ev.reminders||[]).map(r=>{if(!r.id)r.id=uid();return r;});
       });
       return {events:raw.events,snoozes:raw.snoozes||[],settings:Object.assign({},DEF,raw.settings||{})};
@@ -271,7 +371,10 @@ function loadState(){
   }catch(e){}
   return {events:[],snoozes:[],settings:Object.assign({},DEF)};
 }
-function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function saveState(){
+  try{localStorage.setItem(KEY,JSON.stringify(state));}
+  catch(e){toast('⚠️ Память заполнена');}
+}
 
 /* ============ УТИЛИТЫ ============ */
 const $=id=>document.getElementById(id);
@@ -320,8 +423,16 @@ function download(name,content,type){
 function stepDate(d,rep){
   if(rep==='daily')d.setDate(d.getDate()+1);
   else if(rep==='weekly')d.setDate(d.getDate()+7);
-  else if(rep==='monthly')d.setMonth(d.getMonth()+1);
-  else if(rep==='yearly')d.setFullYear(d.getFullYear()+1);
+  else if(rep==='monthly'){
+    const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+1);
+    const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+    d.setDate(Math.min(day,last));
+  }
+  else if(rep==='yearly'){
+    const month=d.getMonth(),day=d.getDate();d.setDate(1);d.setFullYear(d.getFullYear()+1);
+    const last=new Date(d.getFullYear(),month+1,0).getDate();
+    d.setMonth(month);d.setDate(Math.min(day,last));
+  }
 }
 function nextOcc(ev,from){
   if(!ev.repeat||ev.repeat==='none')return ev.ts;
@@ -352,7 +463,7 @@ function occsForward(ev,from,to){
   const cur=new Date(ev.ts);let g=0;
   while(cur.getTime()<from&&g++<5000)stepDate(cur,ev.repeat);
   let g2=0;
-  while(cur.getTime()<=to&&g2++<200){out.push(cur.getTime());stepDate(cur,ev.repeat);}
+  while(cur.getTime()<=to&&g2++<400){out.push(cur.getTime());stepDate(cur,ev.repeat);}
   return out;
 }
 
@@ -385,6 +496,7 @@ function getMissed(now){
 }
 function checkReminders(now){
   let changed=false;
+  const seen=new Set();
   for(const ev of state.events){
     if(ev.done)continue;
     for(const r of ev.reminders){
@@ -396,6 +508,9 @@ function checkReminders(now){
       if(age>FIRE_WINDOW){ev.fired.push(key);changed=true;continue;}
       ev.fired.push(key);changed=true;
       if(ev.fired.length>300)ev.fired=ev.fired.slice(-300);
+      const dedup=`${ev.title}|${Math.floor(target/1000)}`;
+      if(seen.has(dedup))continue;
+      seen.add(dedup);
       queueAlarm({title:ev.title||'Событие',sub:remLabel(r),when:target,critical:ev.priority==='critical'});
     }
   }
@@ -500,7 +615,7 @@ async function postNtfySchedule(ev,r,target){
 }
 async function scheduleNtfyForEvent(ev){
   if(!state.settings.ntfy||!navigator.onLine)return 0;
-  const now=Date.now(),until=now+7*86400000;
+  const now=Date.now(),until=now+NTFY_HORIZON;
   const occs=occsForward(ev,now,until);
   let count=0;
   for(const r of ev.reminders){
@@ -516,26 +631,30 @@ async function scheduleNtfyForEvent(ev){
   if(count)saveState();
   return count;
 }
-async function syncNtfyAll(){
-  if(!state.settings.ntfy){toast('Сначала укажи топик ntfy');return;}
-  if(!navigator.onLine){toast('Нет интернета');return;}
+async function syncNtfyAll(silent=false){
+  if(!state.settings.ntfy){if(!silent)toast('Сначала укажи топик ntfy');return 0;}
+  if(!navigator.onLine){if(!silent)toast('Нет интернета');return 0;}
   let total=0;
   for(const ev of state.events){
     if(ev.done)continue;
     total+=await scheduleNtfyForEvent(ev);
   }
-  toast(total?`Отправлено ${total} напоминаний ✓`:'Нечего отправлять');
+  if(!silent)toast(total?`Отправлено ${total} напоминаний ✓`:'Нечего отправлять');
+  return total;
 }
 async function testNtfy(){
   if(!state.settings.ntfy){toast('Сначала укажи топик');return;}
-  toast('Отправляю...');
+  toast('Отправляю мгновенно...');
   try{
     const res=await fetch('https://ntfy.sh',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({topic:state.settings.ntfy,title:'⚠️ Тест дневника',
-        message:'Если видишь это — пуш работает!',priority:5,tags:['warning'],delay:'3s'})
+        message:'Если это пришло — пуши работают!',priority:5,tags:['warning']})
     });
-    toast(res.ok?'Отправлено ✓ (проверь ntfy)':'Ошибка: '+res.status);
+    if(res.ok){
+      state.settings.ntfyConfirmed=true;saveState();
+      toast('Отправлено ✓ Проверь ntfy');
+    } else toast('Ошибка: '+res.status);
   }catch(e){toast('Ошибка сети');}
 }
 
@@ -627,6 +746,7 @@ function updateBell(){
   const on=('Notification' in window)&&Notification.permission==='granted';
   $('btnBell').textContent=on?'🔔':'🔕';
   $('btnBell').style.opacity=on?'1':'.55';
+  $('btnBell').classList.toggle('dot',!on);
 }
 function catBadge(ev){
   if(!ev.category||ev.category==='none')return '';
@@ -637,6 +757,7 @@ function cardHTML(o,i){
   const ev=o.ev,ts=o.ts,diff=ts-Date.now();
   const crit=ev.priority==='critical'&&!ev.done;
   return `<div class="card glass tap ${ev.done?'done':''} ${crit?'critical':''}" data-open="${esc(ev.id)}" style="animation-delay:${Math.min(i*45,450)}ms">
+    <div class="glow"></div>
     <button class="chk ${ev.done?'on':''}" data-done="${esc(ev.id)}" onclick="event.stopPropagation();toggleDone('${esc(ev.id)}')">${ev.done?'✓':''}</button>
     <div class="grow">
       <div class="ctitle">${esc(ev.title)}</div>
@@ -651,6 +772,8 @@ function renderToday(){
   const future=all.filter(o=>o.ts>=now).sort((a,b)=>a.ts-b.ts);
   const past=all.filter(o=>o.ts<now).sort((a,b)=>b.ts-a.ts);
   let h='';
+  // Онбординг
+  h+=renderOnboard();
   if(missedCache.length){
     h+=`<div class="banner glass warn">
       <div class="em">🔔</div>
@@ -659,12 +782,6 @@ function renderToday(){
       <button class="btn small primary" onclick="showMissed()">Показать</button>
     </div>`;
   }
-  h+=`<div class="banner glass info">
-    <div class="em">📅</div>
-    <div class="bt"><b>100% напоминания</b>
-    <small>Отправь в Календарь iPhone — сработают даже без интернета</small></div>
-    <button class="btn small primary" onclick="exportICS()">В Календарь</button>
-  </div>`;
   if(future.length){
     const n=future[0],diff=n.ts-now;
     h+=`<div class="hero glass">
@@ -689,6 +806,31 @@ function renderToday(){
   if(past.length){h+='<div class="sect">Прошло</div>';h+=past.slice(0,6).map(cardHTML).join('');}
   return h;
 }
+function renderOnboard(){
+  const s=state.settings;
+  const notifOk=('Notification' in window)&&Notification.permission==='granted';
+  const ntfyOk=s.ntfy&&s.ntfyConfirmed;
+  const icsOk=localStorage.getItem('ics_exported')==='1';
+  if(notifOk&&ntfyOk&&icsOk)return '';
+  return `<div class="onboard glass">
+    <div class="obtitle">🚀 Настрой уведомления (3 шага)</div>
+    <div class="obitem ${ntfyOk?'done':''}" onclick="${ntfyOk?'':'tab=\'set\';render()'}">
+      <div class="obchk">${ntfyOk?'✓':''}</div>
+      <div class="obtxt"><b>ntfy — пуши при закрытом сайте</b>
+      <small>${ntfyOk?'Настроено ✓':'Установи ntfy → подпишись на топик → вставь его в настройках'}</small></div>
+    </div>
+    <div class="obitem ${icsOk?'done':''}" onclick="${icsOk?'':'exportICS();localStorage.setItem(\'ics_exported\',\'1\');render()'}">
+      <div class="obchk">${icsOk?'✓':''}</div>
+      <div class="obtxt"><b>Экспорт в Календарь (.ics)</b>
+      <small>${icsOk?'Экспортировано ✓':'100% способ: события попадут в нативный Календарь iPhone'}</small></div>
+    </div>
+    <div class="obitem ${notifOk?'done':''}" onclick="${notifOk?'':'askNotify()'}">
+      <div class="obchk">${notifOk?'✓':''}</div>
+      <div class="obtxt"><b>Разрешить уведомления</b>
+      <small>${notifOk?'Разрешено ✓':'Для работы внутри приложения'}</small></div>
+    </div>
+  </div>`;
+}
 function renderList(){
   const now=Date.now();
   let h=`<div class="row" style="margin-bottom:10px">
@@ -700,6 +842,7 @@ function renderList(){
     <div class="fchip ${filterCat==='done'?'on':''}" onclick="filterCat='done';render()">✓ Выполненные</div>
   </div>`;
   h+='<div id="listbody"></div>';
+  setTimeout(renderListOnly,0);
   return h;
 }
 function renderListOnly(){
@@ -765,34 +908,43 @@ function pickDay(d){selDay=selDay===d?null:d;render(true);}
 function renderSettings(){
   const s=state.settings;
   const notifOk=('Notification' in window)&&Notification.permission==='granted';
+  const ntfyOk=s.ntfy&&s.ntfyConfirmed;
   const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
   return `
   <div class="settingscard glass">
-    <div class="label">📅 Способ №1 — 100% гарантия</div>
+    <div class="label">📡 ntfy — пуши при закрытом сайте</div>
     <div class="hint">
-      <b>Нативный Календарь iPhone.</b> Экспорт .ics — единственный способ, который работает <b>всегда</b>: без интернета, без открытого сайта, без ntfy. iOS будет трясти телефон даже в фокусе и на блокировке.
+      <b>Как настроить:</b><br>
+      1. Установи <b>ntfy</b> из App Store<br>
+      2. В приложении: «+» → подписка на топик → придумай секретное имя (например <code>moy-dnevnik-${Math.random().toString(36).slice(2,8)}</code>)<br>
+      3. Разреши ntfy уведомления в настройках iPhone → <b>«Срочные» = Вкл</b><br>
+      4. Вставь топик ниже
     </div>
-    <button class="btn primary" style="margin-top:12px;width:100%" onclick="exportICS()">📥 Отправить всё в Календарь</button>
-    <div class="hint" style="margin-top:8px">Открой скачанный файл → «Добавить всё». Повторяй после каждого изменения событий.</div>
-  </div>
-  <div class="settingscard glass">
-    <div class="label">📡 Способ №2 — ntfy (пуш при закрытом сайте)</div>
-    <div class="hint">
-      Установи <b>ntfy</b> из App Store → подпишись на секретный топик (например <code>moy-dnevnik-9f3k2x</code>) → впиши его здесь. Сайт будет автоматически отправлять запланированные пуши на 7 дней вперёд.
+    <div class="row" style="margin-top:12px">
+      <span class="status ${ntfyOk?'ok':s.ntfy?'warn':'bad'}">${ntfyOk?'✓ работает':s.ntfy?'⚠ не подтверждён':'✗ не настроен'}</span>
     </div>
-    <input class="field" id="s-ntfy" placeholder="секретный топик ntfy" value="${esc(s.ntfy)}" style="margin:12px 0 8px">
+    <input class="field" id="s-ntfy" placeholder="секретный топик ntfy" value="${esc(s.ntfy)}" style="margin:10px 0 8px">
     <div class="row">
       <button class="btn primary" style="flex:1" onclick="saveNtfy()">Сохранить</button>
       <button class="btn" style="flex:1" onclick="testNtfy()">Тест</button>
     </div>
-    <button class="btn" style="width:100%;margin-top:6px" onclick="syncNtfyAll()">🔄 Пересинхронизировать все напоминания</button>
+    <button class="btn" style="width:100%;margin-top:6px" onclick="syncNtfyAll()">🔄 Пересинхронизировать (${NTFY_HORIZON/86400000} дней)</button>
   </div>
+
   <div class="settingscard glass">
-    <div class="label">🔔 Способ №3 — системные уведомления</div>
+    <div class="label">📅 .ics → нативный Календарь (100%)</div>
     <div class="hint">
-      Статус: <b style="color:${notifOk?'#34d399':'#ff8a80'}">${notifOk?'разрешены ✓':'не разрешены'}</b><br>
+      <b>Самый надёжный способ.</b> События и будильники копируются в нативный Календарь iPhone. Работают <b>всегда</b>: офлайн, на заблокированном экране, в фокусе, в самолёте. Экспорт нужно повторять после изменений.
+    </div>
+    <button class="btn primary" style="margin-top:12px;width:100%" onclick="exportICS();localStorage.setItem('ics_exported','1');render()">📥 Отправить всё в Календарь</button>
+  </div>
+
+  <div class="settingscard glass">
+    <div class="label">🔔 Системные уведомления (только при открытом сайте)</div>
+    <div class="hint">
+      Статус: <span class="status ${notifOk?'ok':'bad'}">${notifOk?'разрешены ✓':'не разрешены'}</span><br>
       Режим: <b>${isStandalone?'установлено на «Домой» ✓':'открыто в Safari'}</b><br><br>
-      ${isStandalone?'':'⚠️ Сначала «Поделиться» → «На экран Домой». Без этого iOS не даст уведомления.'}
+      ${isStandalone?'':'⚠️ Сначала «Поделиться» → «На экран Домой».'}
     </div>
     <div class="row" style="margin-top:12px">
       <button class="btn primary" style="flex:1" onclick="askNotify()">Разрешить</button>
@@ -800,6 +952,7 @@ function renderSettings(){
     </div>
     <button class="btn" style="width:100%;margin-top:6px" onclick="unlockAudio()">🔊 Включить звук</button>
   </div>
+
   <div class="settingscard glass">
     <div class="label">🎨 Оформление</div>
     <div class="chips">
@@ -812,6 +965,7 @@ function renderSettings(){
       <div class="chip ${s.sound?'on':''}" onclick="toggleSound()">${s.sound?'Включён':'Выключен'}</div>
     </div>
   </div>
+
   <div class="settingscard glass">
     <div class="label">💾 Данные</div>
     <div class="row">
@@ -821,13 +975,15 @@ function renderSettings(){
     <input type="file" id="imp" accept=".json" style="display:none" onchange="importJSON(this)">
     <button class="btn danger" style="width:100%;margin-top:8px" onclick="resetAll()">Удалить все события</button>
   </div>
+
   <div class="settingscard glass">
-    <div class="label">ℹ️ Как это работает</div>
+    <div class="label">ℹ️ Почему сайт не присылает пуши сам</div>
     <div class="hint">
-      <b>Открыт сайт</b> → полноэкранная тревога ⚠️ со звуком и вибрацией.<br>
-      <b>Свёрнут/закрыт</b> → ntfy-пуш приходит на iPhone через приложение ntfy.<br>
-      <b>Гарантированно всегда</b> → .ics → нативный Календарь. Это работает даже в самолётном режиме.<br><br>
-      Все данные хранятся <b>только на твоём iPhone</b>.
+      iOS не даёт PWA-сайтам отправлять push, когда приложение закрыто. Это ограничение Apple.<br><br>
+      <b>Единственные рабочие пути:</b><br>
+      • <b>ntfy</b> — стороннее приложение принимает пуш от сервера ntfy (сайт заранее ставит отложенные пуши на сервере) → iPhone показывает уведомление.<br>
+      • <b>.ics</b> — события копируются в нативный Календарь, который умеет будильники всегда.<br><br>
+      Оба способа работают даже когда сайт закрыт.
     </div>
   </div>
   <div style="height:20px"></div>`;
@@ -855,7 +1011,7 @@ function openEditor(ev){
     <div class="label">Быстро</div>
     <div class="quickrow">
       <div class="chip" onclick="quickSet(3600000)">Через час</div>
-      <div class="chip" onclick="quickSet('evening')">Сегодня вечером</div>
+      <div class="chip" onclick="quickSet('evening')">Вечером</div>
       <div class="chip" onclick="quickSet('tomorrow9')">Завтра 9:00</div>
       <div class="chip" onclick="quickSet('week')">Через неделю</div>
     </div>
@@ -904,12 +1060,12 @@ function openEditor(ev){
         <option value="3600">часов</option><option value="86400">дней</option>
         <option value="604800">недель</option>
       </select>
-      <button class="btn" onclick="addCustomRem()" style="padding:13px 16px">＋</button>
+      <button class="btn" onclick="addCustomRem()" style="padding:14px 16px">＋</button>
     </div>
     <div class="label">Будильник на точное время</div>
     <div class="row">
       <input class="field" id="f-abs" type="datetime-local" step="1" style="flex:1">
-      <button class="btn" onclick="addAbsRem()" style="padding:13px 16px">⏰</button>
+      <button class="btn" onclick="addAbsRem()" style="padding:14px 16px">⏰</button>
     </div>
     <div id="f-remlist"></div>
     <div class="label">Заметки</div>
@@ -978,7 +1134,7 @@ function delRem(i){
 }
 function renderRemList(){
   const box=$('f-remlist');if(!box)return;
-  if(!editing.reminders.length){box.innerHTML='<div class="hint" style="margin-bottom:10px">Нет напоминаний — событие будет только в списке</div>';return;}
+  if(!editing.reminders.length){box.innerHTML='<div class="hint" style="margin-bottom:10px">Нет напоминаний</div>';return;}
   box.innerHTML=editing.reminders.map((r,i)=>
     `<div class="remrow glass"><span>${r.kind==='abs'?'⏰ '+fmtDateTime(r.ts):'⏳ за '+secLabel(r.sec)}</span>
     <button class="mini" onclick="delRem(${i})">✕</button></div>`).join('');
@@ -1032,7 +1188,8 @@ function showMissed(){
 }
 function saveNtfy(){
   state.settings.ntfy=$('s-ntfy').value.trim().replace(/[^a-zA-Z0-9_\-]/g,'');
-  saveState();toast('Топик сохранён');render(true);
+  state.settings.ntfyConfirmed=false;
+  saveState();toast('Топик сохранён — нажми «Тест»');render(true);
 }
 function setTheme(t){
   state.settings.theme=t;saveState();
@@ -1067,7 +1224,13 @@ function tickUI(){
   const now=Date.now();
   document.querySelectorAll('[data-cd]').forEach(el=>{
     const t=+el.dataset.cd,diff=t-now;
-    el.textContent=diff>0?(el.classList.contains('big')?fmtDur(diff):'через '+fmtDur(diff)):'сейчас';
+    const txt=diff>0?(el.classList.contains('big')?fmtDur(diff):'через '+fmtDur(diff)):'сейчас';
+    if(lastTickVal[el.dataset.cd]!==txt){
+      lastTickVal[el.dataset.cd]=txt;
+      el.textContent=txt;
+      if(el.classList.contains('big')){el.classList.add('tick');setTimeout(()=>el.classList.remove('tick'),300);}
+      else if(el.classList.contains('cd')){el.classList.add('tick');setTimeout(()=>el.classList.remove('tick'),250);}
+    }
     if(el.classList.contains('big')||el.classList.contains('cd'))el.classList.toggle('neg',diff<0);
   });
 }
@@ -1080,11 +1243,28 @@ function tick(){
   if(dk!==lastDayKey){lastDayKey=dk;render(true);}
 }
 
-/* ============ SERVICE WORKER (inline) ============ */
+/* ============ ПАРАЛЛАКС ============ */
+function initParallax(){
+  if(!window.DeviceOrientationEvent)return;
+  let lastX=0,lastY=0;
+  window.addEventListener('deviceorientation',e=>{
+    if(!e.gamma||!e.beta)return;
+    const x=Math.max(-15,Math.min(15,e.gamma));
+    const y=Math.max(-15,Math.min(15,e.beta-45));
+    if(Math.abs(x-lastX)<1&&Math.abs(y-lastY)<1)return;
+    lastX=x;lastY=y;
+    document.querySelectorAll('.blob').forEach((b,i)=>{
+      const f=(i+1)*0.4;
+      b.style.transform=`translate3d(${x*f}px,${y*f}px,0)`;
+    });
+  });
+}
+
+/* ============ SERVICE WORKER ============ */
 async function initSW(){
   if(!('serviceWorker' in navigator))return;
   const swCode=`
-    const CACHE='diary-v3';
+    const CACHE='diary-v4';
     self.addEventListener('install',()=>self.skipWaiting());
     self.addEventListener('activate',e=>e.waitUntil(clients.claim()));
     self.addEventListener('fetch',e=>{
@@ -1112,7 +1292,7 @@ async function initSW(){
   }catch(e){console.warn('SW:',e);}
 }
 
-/* ============ MANIFEST (inline) ============ */
+/* ============ MANIFEST ============ */
 function initManifest(){
   const icon=`data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM2ZTlkZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMzYzYyZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTkwIDQwIEwxNTAgMTQwIEwzMCAxNDAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHJlY3QgeD0iODMiIHk9Ijc0IiB3aWR0aD0iMTQiIGhlaWdodD0iNDIiIHJ4PSI3IiBmaWxsPSJ3aGl0ZSIvPjxjaXJjbGUgY3g9IjkwIiBjeT0iMTI4IiByPSI4IiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==`;
   const manifest={
@@ -1134,6 +1314,7 @@ async function init(){
   matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(state.settings.theme==='auto')applyTheme();});
   initManifest();
   await initSW();
+  initParallax();
   document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;selDay=null;render();}));
   $('main').addEventListener('click',e=>{
     const done=e.target.closest('[data-done]');if(done)return;
@@ -1142,8 +1323,9 @@ async function init(){
   });
   missedCache=getMissed(Date.now());
   render();
-  setTimeout(()=>{if(state.settings.ntfy&&navigator.onLine)syncNtfyAll();},3000);
-  window.addEventListener('online',()=>{if(state.settings.ntfy)syncNtfyAll();});
+  // Автосинхронизация ntfy при старте (если настроен и подтверждён)
+  setTimeout(()=>{if(state.settings.ntfy&&state.settings.ntfyConfirmed&&navigator.onLine)syncNtfyAll(true);},2500);
+  window.addEventListener('online',()=>{if(state.settings.ntfy)syncNtfyAll(true);});
   setInterval(tick,500);
   setInterval(()=>{if(tab==='today'||tab==='cal')render(true);},60000);
 }
